@@ -28,6 +28,7 @@ export default function BriefPage() {
 
   async function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (status === "sending") return;
     const f = new FormData(e.currentTarget);
     setStatus("sending");
     try {
@@ -43,6 +44,7 @@ export default function BriefPage() {
           budget: f.get("budget"),
           timeline: f.get("timeline"),
           description: f.get("description"),
+          paidWork: f.get("paidWork") === "on",
         }),
       });
       setStatus(res.ok ? "sent" : "error");
@@ -162,6 +164,11 @@ export default function BriefPage() {
                 className="w-full border border-rule bg-transparent px-3 py-2 text-sm outline-none focus:border-ink"
               />
             </div>
+
+            <label className="flex items-start gap-3 text-sm leading-relaxed">
+              <input name="paidWork" type="checkbox" required className="mt-1" />
+              <span>I confirm this is paid creative work.</span>
+            </label>
 
             <div className="space-y-3">
               <button

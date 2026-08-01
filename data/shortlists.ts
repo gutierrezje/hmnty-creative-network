@@ -75,35 +75,22 @@ export const SHORTLISTS: Shortlist[] = [
 ];
 
 /**
- * What the curator surface is allowed to see about a creative — deliberately
- * more than the wall's WallCreative, because the curator is the one accountable
- * human who reads the private consent record to decide whether an introduction
- * may fire. This is NOT a wall-safe projection: it carries the mayIntroduce
- * grant and the contact so the console can gate the introduction action and,
- * only after an accepted introduction, reveal the contact.
+ * What the unprotected curator demo may serialize about a creative. Private
+ * identity, rate, contact, and consent text stay server-side; only an
+ * introduction capability reaches the browser.
  *
  * The /curator route is unlisted and unsecured for the pilot (see the route
  * comment). This view is only ever built on the server for that surface.
  */
 export type CuratorCreative = {
   id: string;
-  name: string;
   roles: string[];
   city: string;
   availability: string;
-  rate?: string;
-  credit?: string;
   /** The gate on the introduction action. True only when the creative granted
    *  mayIntroduce. When false, the console disables "make introduction" and
    *  says why in plain language. */
   mayIntroduce: boolean;
-  /** The exact consent line, so the curator reads the creative's own words for
-   *  why an introduction can or cannot fire. */
-  mayIntroduceStatement?: string;
-  /** Private. Revealed by the console only after an accepted introduction, so a
-   *  demo can show the loop completing without leaking contacts before consent
-   *  and acceptance both hold. */
-  contact?: string;
   placeholder?: boolean;
 };
 
@@ -122,15 +109,10 @@ export function mayIntroduce(c: Creative): boolean {
 export function curatorView(c: Creative): CuratorCreative {
   return {
     id: c.id,
-    name: c.name,
     roles: c.roles,
     city: c.city,
     availability: c.availability,
-    rate: c.rate,
-    credit: c.credit,
     mayIntroduce: mayIntroduce(c),
-    mayIntroduceStatement: c.consent?.mayIntroduce.statement,
-    contact: c.contact,
     placeholder: c.placeholder,
   };
 }

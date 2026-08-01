@@ -39,6 +39,27 @@ export type Brief = {
   placeholder?: boolean;
 };
 
+/** Public-safe brief data for the unprotected curator demo. Private employer
+ * contact and budget details stay in the HMNTY inbox and never reach the
+ * browser. The description must be a non-confidential summary. */
+export type CuratorBrief = Pick<
+  Brief,
+  "id" | "org" | "roles" | "city" | "timeline" | "description" | "at" | "placeholder"
+>;
+
+export function curatorBriefView(brief: Brief): CuratorBrief {
+  return {
+    id: brief.id,
+    org: brief.org,
+    roles: brief.roles,
+    city: brief.city,
+    timeline: brief.timeline,
+    description: brief.description,
+    at: brief.at,
+    placeholder: brief.placeholder,
+  };
+}
+
 export const BRIEFS: Brief[] = [
   {
     // Placeholder — not a real employer or a real commitment. It exists only so
@@ -67,7 +88,7 @@ export const BRIEFS: Brief[] = [
  * its own; the human owns every pick. The one-line computation lives inline in
  * the curator console where the sort happens.
  */
-export function roleOverlap(brief: Brief, roles: string[]): number {
+export function roleOverlap(brief: Pick<Brief, "roles">, roles: string[]): number {
   const need = new Set(brief.roles);
   return roles.filter((r) => need.has(r)).length;
 }

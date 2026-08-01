@@ -1,8 +1,8 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import type { Brief } from "@/data/briefs";
+import type { CuratorBrief } from "@/data/briefs";
 import { roleOverlap } from "@/data/briefs";
 import type { CuratorCreative, Shortlist } from "@/data/shortlists";
 
@@ -31,7 +31,7 @@ export default function CuratorConsole({
   creatives,
   seedShortlists,
 }: {
-  briefs: Brief[];
+  briefs: CuratorBrief[];
   creatives: CuratorCreative[];
   seedShortlists: Shortlist[];
 }) {
@@ -49,17 +49,18 @@ export default function CuratorConsole({
 
   // creativeId -> rationale. Presence of a key means "on the shortlist".
   const [picks, setPicks] = useState<Record<string, string>>(seededPicks);
-  // Reset picks when the brief changes.
-  const [pickedBrief, setPickedBrief] = useState<string>(briefId);
-  if (pickedBrief !== briefId) {
-    setPickedBrief(briefId);
-    setPicks(seededPicks);
-  }
-
   // Introduction state per creative, and the employer org captured once.
   const [intro, setIntro] = useState<Record<string, IntroState>>({});
   const [sending, setSending] = useState<Record<string, Sending>>({});
   const [employerOrg, setEmployerOrg] = useState<string>(brief?.org ?? "");
+  const [curatorName, setCuratorName] = useState("");
+
+  useEffect(() => {
+    setPicks(seededPicks);
+    setEmployerOrg(brief?.org ?? "");
+    setIntro({});
+    setSending({});
+  }, [brief?.org, seededPicks]);
 
   // The advisory suggested order: role-overlap with the brief, most first. A
   // transparent heuristic, not a model call, and it changes nothing on its own.
@@ -84,7 +85,13 @@ export default function CuratorConsole({
   }
 
   async function makeIntroduction(c: CuratorCreative) {
-    if (!brief || !c.mayIntroduce) return;
+    if (
+      !brief ||
+      !c.mayIntroduce ||
+      !curatorName.trim() ||
+      sending[c.id] === "sending"
+    )
+      return;
     setSending((s) => ({ ...s, [c.id]: "sending" }));
     try {
       const res = await fetch("/api/request", {
@@ -94,11 +101,9 @@ export default function CuratorConsole({
           kind: "introduction",
           briefId: brief.id,
           creativeId: c.id,
-          creativeName: c.name,
           employerOrg: employerOrg || brief.org,
-          curator: "hmnty curator",
+          curator: curatorName.trim(),
           rationale: picks[c.id] ?? "",
-          mayIntroduce: c.mayIntroduce,
         }),
       });
       if (res.ok) {
@@ -159,7 +164,6 @@ export default function CuratorConsole({
           <div className="mt-6 max-w-2xl">
             <p className="meta text-ash">
               {brief.roles.join(" · ")} · {brief.city}
-              {brief.budget ? ` · ${brief.budget}` : ""}
               {brief.timeline ? ` · ${brief.timeline}` : ""}
             </p>
             <p className="mt-3 text-sm leading-relaxed">{brief.description}</p>
@@ -200,7 +204,6 @@ export default function CuratorConsole({
                     <span className="meta text-ink">{c.roles.join(" · ")}</span>
                     <span className="meta ml-3 text-ash">
                       {c.city} · {c.availability}
-                      {c.rate ? ` · ${c.rate}` : ""}
                     </span>
                     {c.placeholder ? (
                       <span className="meta ml-3 text-ash">placeholder</span>
@@ -214,7 +217,7 @@ export default function CuratorConsole({
                 {/* Name shown here because the curator is the accountable human
                     who reveals identity while building a shortlist — this is not
                     the wall. */}
-                <p className="mt-1 text-sm">{c.name}</p>
+                <p className="mt-1 text-sm">Creative {c.id}</p>
 
                 <button
                   onClick={() => togglePick(c.id)}
@@ -246,6 +249,7 @@ export default function CuratorConsole({
                       state={intro[c.id] ?? "none"}
                       sending={sending[c.id] ?? "idle"}
                       hasRationale={Boolean((picks[c.id] ?? "").trim())}
+                      hasCurator={Boolean(curatorName.trim())}
                       onMake={() => makeIntroduction(c)}
                       onAccept={() => acceptIntroduction(c.id)}
                     />
@@ -259,10 +263,19 @@ export default function CuratorConsole({
 
       {/* Employer org for the introduction record. */}
       <section className="px-6 py-8 sm:px-10">
-        <p className="meta text-ash">Employer for the introduction</p>
+        <p className="meta text-ash">Named HMNTY curator</p>
+        <input
+          value={curatorName}
+          onChange={(e) => setCuratorName(e.target.value)}
+          aria-label="Named HMNTY curator"
+          placeholder="your name"
+          className="mt-3 w-full max-w-md border border-rule bg-transparent px-3 py-2 text-sm outline-none focus:border-ink"
+        />
+        <p className="meta mt-6 text-ash">Employer for the introduction</p>
         <input
           value={employerOrg}
           onChange={(e) => setEmployerOrg(e.target.value)}
+          aria-label="Employer for the introduction"
           placeholder="the employer accepting the introduction"
           className="mt-3 w-full max-w-md border border-rule bg-transparent px-3 py-2 text-sm outline-none focus:border-ink"
         />
@@ -294,6 +307,7 @@ function IntroductionRow({
   state,
   sending,
   hasRationale,
+  hasCurator,
   onMake,
   onAccept,
 }: {
@@ -301,6 +315,7 @@ function IntroductionRow({
   state: IntroState;
   sending: Sending;
   hasRationale: boolean;
+  hasCurator: boolean;
   onMake: () => void;
   onAccept: () => void;
 }) {
@@ -309,14 +324,12 @@ function IntroductionRow({
       <div className="mt-4 border border-ink px-4 py-3">
         <p className="meta text-ink">Introduction accepted</p>
         <p className="mt-2 text-sm leading-relaxed">
-          {creative.name} and the employer are connected for this brief. The
+          Creative {creative.id} and the employer are connected for this brief. The
           loop is complete.
         </p>
-        {creative.contact ? (
-          <p className="meta mt-2 text-ash">
-            contact shared with the employer: {creative.contact}
-          </p>
-        ) : null}
+        <p className="meta mt-2 text-ash">
+          HMNTY handles the contact exchange privately.
+        </p>
       </div>
     );
   }
@@ -326,7 +339,7 @@ function IntroductionRow({
       <div className="mt-4 border border-rule px-4 py-3">
         <p className="meta text-ash">Introduction made, awaiting employer</p>
         <p className="mt-2 text-sm leading-relaxed">
-          HMNTY handed {creative.name} to the employer. When the employer accepts,
+          HMNTY offered creative {creative.id} to the employer. When the employer accepts,
           the loop is complete.
         </p>
         <button
@@ -345,11 +358,8 @@ function IntroductionRow({
       <div className="mt-4 border border-rule px-4 py-3">
         <p className="meta text-ash">Introduction not available</p>
         <p className="mt-2 text-sm leading-relaxed">
-          {creative.name} has not said yes to being introduced.
-          {creative.mayIntroduceStatement
-            ? ` In their words: “${creative.mayIntroduceStatement}”`
-            : ""}{" "}
-          HMNTY asks them again before handing an employer their contact.
+          This creative has not said yes to being introduced. HMNTY asks them
+          again before handing an employer their contact.
         </p>
         <button
           disabled
@@ -365,7 +375,7 @@ function IntroductionRow({
     <div className="mt-4">
       <button
         onClick={onMake}
-        disabled={sending === "sending" || !hasRationale}
+        disabled={sending === "sending" || !hasRationale || !hasCurator}
         className="meta bg-ink px-4 py-3 text-paper transition-opacity hover:opacity-85 disabled:opacity-50"
       >
         {sending === "sending" ? "Sending…" : "Make introduction"}
@@ -374,6 +384,9 @@ function IntroductionRow({
         <p className="meta mt-2 text-ash">
           write why this creative belongs first
         </p>
+      ) : null}
+      {!hasCurator ? (
+        <p className="meta mt-2 text-ash">add the curator's name first</p>
       ) : null}
       {sending === "error" ? (
         <p className="meta mt-2 text-ash">

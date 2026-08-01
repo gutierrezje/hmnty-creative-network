@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { ROLES } from "@/data/talent";
+import { ROLES, TALENT } from "@/data/talent";
+import { mayIntroduce as creativeMayIntroduce } from "@/data/shortlists";
 
 /**
  * The intake endpoint. Deliberately not a database.
@@ -223,6 +224,7 @@ export async function POST(req: Request) {
       : [];
     const city = str(body.city);
     const description = str(body.description);
+    const paidWork = body.paidWork === true;
 
     // Required: who the employer is, a way to reach them, at least one role the
     // work needs, the city, and enough description for a curator to identify
@@ -233,7 +235,8 @@ export async function POST(req: Request) {
       roles.length === 0 ||
       roles.some((role) => !ROLES.includes(role as (typeof ROLES)[number])) ||
       !city ||
-      !description
+      !description ||
+      !paidWork
     ) {
       return NextResponse.json({ error: "missing fields" }, { status: 400 });
     }
@@ -248,6 +251,7 @@ export async function POST(req: Request) {
       `Contact: ${contactEmail}`,
       `Role(s) needed: ${roles.join(", ")}`,
       `City: ${city}`,
+      `Paid work: affirmed`,
       budget ? `Rate / budget: ${budget}` : `Rate / budget: (not given)`,
       timeline ? `Timeline: ${timeline}` : `Timeline: (not given)`,
       ``,
@@ -263,33 +267,32 @@ export async function POST(req: Request) {
     // introduced; this is the server-side backstop for that gate.
     const briefId = str(body.briefId);
     const creativeId = str(body.creativeId);
-    const creativeName = str(body.creativeName);
     const employerOrg = str(body.employerOrg);
     const curator = str(body.curator);
     const rationale = str(body.rationale);
-    const mayIntroduce = body.mayIntroduce === true;
+    const creative = TALENT.find((candidate) => candidate.id === creativeId);
 
-    if (!briefId || !creativeId || !employerOrg || !curator) {
+    if (!briefId || !creativeId || !employerOrg || !curator || !rationale) {
       return NextResponse.json({ error: "missing fields" }, { status: 400 });
     }
     // An introduction cannot fire without the creative saying they may be
     // introduced, separate from the employer accepting. Fail closed if unset.
-    if (!mayIntroduce) {
+    if (!creative || !creativeMayIntroduce(creative)) {
       return NextResponse.json(
         { error: "creative has not agreed to be introduced" },
         { status: 403 },
       );
     }
 
-    subject = `Introduction — ${creativeName || creativeId} for ${employerOrg}`;
+    subject = `Introduction — ${creative.name} for ${employerOrg}`;
     summary = [
       `Kind: introduction`,
       `Brief: ${briefId}`,
       `Employer: ${employerOrg}`,
-      `Creative: ${creativeName || "(unnamed)"} (${creativeId})`,
+      `Creative: ${creative.name} (${creativeId})`,
       `Made by: ${curator}`,
       ``,
-      rationale ? `Why this creative: ${rationale}` : `Why this creative: (not given)`,
+      `Why this creative: ${rationale}`,
       ``,
       `The creative said they may be introduced. A curator made this call; the`,
       `employer accepting completes the loop.`,

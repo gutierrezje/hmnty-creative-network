@@ -108,12 +108,11 @@ export default function RequestIntro({
               <p className="mt-4 text-sm text-ash">{creative.credit}</p>
             ) : null}
 
-            {/* Authenticity, as call-sheet facts — not a badge, not a checkmark.
-                The creative attested this is their own work at intake; a named
-                curator confirms it while building a shortlist. */}
+            {/* Authenticity, as the creator's own statement — not a badge or
+                independent verification claim. */}
             {creative.attestation?.ownWork ? (
               <p className="meta mt-4 text-ash">
-                Own work · confirmed {creative.attestation.at}
+                Own work · creator affirmed {creative.attestation.at}
                 <br />
                 {creative.attestation.roleOnProject}
                 {sourceLink ? (
