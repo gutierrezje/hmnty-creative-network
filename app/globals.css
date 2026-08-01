@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+/*
+  The chrome is greyscale on purpose. The work is the only saturated
+  colour anywhere on the page — every card is someone's reel, and nothing
+  in the interface should compete with it.
+*/
+@theme {
+  --color-paper: #fafaf8;
+  --color-ink: #111111;
+  --color-ash: #6b6b66;
+  --color-rule: #e2e1dc;
+
+  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono), ui-monospace, monospace;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Metadata reads like a call sheet: uppercase, monospace, widely tracked. */
+.meta {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
