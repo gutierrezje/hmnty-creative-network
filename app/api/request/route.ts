@@ -14,12 +14,19 @@ import { ROLES } from "@/data/talent";
  *   sourcing signal, never a gate. Nothing about the referred person is
  *   published until they confirm and consent themselves — a curator decides
  *   the appropriate follow-up and promotes them only after that round-trip.
+ * - "brief" — an employer submits a description of paid creative work (/brief).
+ *   A curator reads it and assembles a shortlist by hand; this endpoint stores
+ *   nothing.
+ * - "introduction" — a curator hands one shortlisted creative to an employer
+ *   for a brief (/curator). It carries the curator's name for accountability
+ *   and only ever fires when the creative said they may be introduced, which
+ *   the curator surface enforces before it lets this send.
  *
  * In every case a named HMNTY curator, not this endpoint, decides who reaches
  * the wall. AI may normalize the fields; it admits no one.
  */
 
-type Kind = "intro" | "self-intake" | "referral";
+type Kind = "intro" | "self-intake" | "referral" | "brief" | "introduction";
 
 const RELATIONSHIPS = ["peer", "partner-org-sdsu", "curator", "employer"] as const;
 type Relationship = (typeof RELATIONSHIPS)[number];
@@ -205,6 +212,88 @@ export async function POST(req: Request) {
       `A referral is a sourcing signal, not a gate. This person does not appear`,
       `anywhere until they confirm and consent themselves.`,
     ].join("\n");
+  } else if (kind === "brief") {
+    // An employer describing paid creative work. A curator reads it and builds
+    // a shortlist by hand. Roles come from the existing ROLES set (validated
+    // client-side by the chip control). Stored nowhere — emailed to the inbox.
+    const org = str(body.org);
+    const contactEmail = str(body.contactEmail);
+    const roles = Array.isArray(body.roles)
+      ? (body.roles as unknown[]).map(str).filter(Boolean).slice(0, ROLES.length)
+      : [];
+    const city = str(body.city);
+    const description = str(body.description);
+
+    // Required: who the employer is, a way to reach them, at least one role the
+    // work needs, the city, and enough description for a curator to identify
+    // relevant creatives. Budget and timeline are context, not gates.
+    if (
+      !org ||
+      !isEmail(contactEmail) ||
+      roles.length === 0 ||
+      roles.some((role) => !ROLES.includes(role as (typeof ROLES)[number])) ||
+      !city ||
+      !description
+    ) {
+      return NextResponse.json({ error: "missing fields" }, { status: 400 });
+    }
+
+    const budget = str(body.budget);
+    const timeline = str(body.timeline);
+
+    subject = `Brief — ${org}`;
+    summary = [
+      `Kind: brief`,
+      `Employer: ${org}`,
+      `Contact: ${contactEmail}`,
+      `Role(s) needed: ${roles.join(", ")}`,
+      `City: ${city}`,
+      budget ? `Rate / budget: ${budget}` : `Rate / budget: (not given)`,
+      timeline ? `Timeline: ${timeline}` : `Timeline: (not given)`,
+      ``,
+      `The work:`,
+      description,
+      ``,
+      `A curator reads this and assembles a shortlist by hand. AI may suggest an`,
+      `order; it selects no one.`,
+    ].join("\n");
+  } else if (kind === "introduction") {
+    // A curator handing one shortlisted creative to an employer for a brief.
+    // The curator surface only enables this when the creative said they may be
+    // introduced; this is the server-side backstop for that gate.
+    const briefId = str(body.briefId);
+    const creativeId = str(body.creativeId);
+    const creativeName = str(body.creativeName);
+    const employerOrg = str(body.employerOrg);
+    const curator = str(body.curator);
+    const rationale = str(body.rationale);
+    const mayIntroduce = body.mayIntroduce === true;
+
+    if (!briefId || !creativeId || !employerOrg || !curator) {
+      return NextResponse.json({ error: "missing fields" }, { status: 400 });
+    }
+    // An introduction cannot fire without the creative saying they may be
+    // introduced, separate from the employer accepting. Fail closed if unset.
+    if (!mayIntroduce) {
+      return NextResponse.json(
+        { error: "creative has not agreed to be introduced" },
+        { status: 403 },
+      );
+    }
+
+    subject = `Introduction — ${creativeName || creativeId} for ${employerOrg}`;
+    summary = [
+      `Kind: introduction`,
+      `Brief: ${briefId}`,
+      `Employer: ${employerOrg}`,
+      `Creative: ${creativeName || "(unnamed)"} (${creativeId})`,
+      `Made by: ${curator}`,
+      ``,
+      rationale ? `Why this creative: ${rationale}` : `Why this creative: (not given)`,
+      ``,
+      `The creative said they may be introduced. A curator made this call; the`,
+      `employer accepting completes the loop.`,
+    ].join("\n");
   } else {
     return NextResponse.json({ error: "unknown kind" }, { status: 400 });
   }
@@ -218,7 +307,9 @@ export async function POST(req: Request) {
   }
 
   // For intro and self-intake the sender's own email is a sensible reply-to;
-  // a referral replies to the referrer, not the referred person.
+  // a referral replies to the referrer, not the referred person; a brief
+  // replies to the employer's contact. An introduction is sent by HMNTY on the
+  // curator's behalf and carries no participant reply-to.
   const replyTo =
     kind === "intro"
       ? str(body.from)
@@ -236,7 +327,7 @@ export async function POST(req: Request) {
       body: JSON.stringify({
         from: "HMNTY Wall <onboarding@resend.dev>",
         to: [to],
-        reply_to: replyTo,
+        ...(replyTo ? { reply_to: replyTo } : {}),
         subject,
         text: summary,
       }),

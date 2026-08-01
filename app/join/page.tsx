@@ -93,7 +93,7 @@ export default function JoinPage() {
           <div>
             <p className="text-sm leading-relaxed">
               Submission received. A person at HMNTY reads it and decides what
-              goes on the wall — nothing appears automatically.
+              goes on the wall. Nothing appears automatically.
             </p>
             <Link href="/" className="meta mt-6 inline-block text-ash hover:text-ink">
               ← Back to the wall
@@ -102,7 +102,7 @@ export default function JoinPage() {
         ) : (
           <form onSubmit={submit} className="space-y-8">
             <div className="space-y-3">
-              <p className="meta text-ash">Your work — one to three links</p>
+              <p className="meta text-ash">Your work, one to three links</p>
               <input
                 name="work1"
                 type="url"
@@ -165,7 +165,7 @@ export default function JoinPage() {
                   name="availability"
                   required
                   aria-label="Availability"
-                  placeholder="now, or a month — aug"
+                  placeholder="now, or a month, like aug"
                   className="w-full border border-rule bg-transparent px-3 py-2 text-sm outline-none focus:border-ink"
                 />
               </div>
@@ -173,7 +173,7 @@ export default function JoinPage() {
 
             <div className="grid gap-3 sm:grid-cols-2">
               <div className="space-y-3">
-                <p className="meta text-ash">Rate — optional, reveal-only</p>
+                <p className="meta text-ash">rate (optional)</p>
                 <input
                   name="rate"
                   aria-label="Rate"
@@ -182,30 +182,30 @@ export default function JoinPage() {
                 />
               </div>
               <div className="space-y-3">
-                <p className="meta text-ash">Credit — optional, one line</p>
+                <p className="meta text-ash">where this ran, or your role (optional)</p>
                 <input
                   name="credit"
-                  aria-label="Credit"
-                  placeholder="one credit line"
+                  aria-label="Where this ran, or your role"
+                  placeholder="where it ran, or what you did"
                   className="w-full border border-rule bg-transparent px-3 py-2 text-sm outline-none focus:border-ink"
                 />
               </div>
             </div>
 
             <div className="space-y-3">
-              <p className="meta text-ash">Contact — private, for the introduction only</p>
+              <p className="meta text-ash">Contact, private, for the introduction only</p>
               <input
                 name="contactEmail"
                 type="email"
                 required
                 aria-label="Contact email"
-                placeholder="email — published to no one"
+                placeholder="email, published to no one"
                 className="w-full border border-rule bg-transparent px-3 py-2 text-sm outline-none focus:border-ink"
               />
             </div>
 
             <div className="space-y-3 border-t border-rule pt-8">
-              <p className="meta text-ash">Prompts — optional, up to three</p>
+              <p className="meta text-ash">Prompts, optional, up to three</p>
               <textarea
                 name="prompt1"
                 rows={2}
@@ -230,19 +230,19 @@ export default function JoinPage() {
             </div>
 
             <div className="space-y-3 border-t border-rule pt-8">
-              <p className="meta text-ash">Attestation</p>
+              <p className="meta text-ash">the maker's word</p>
               <input
                 name="roleOnProject"
                 required
                 aria-label="Your role on the submitted work"
-                placeholder="what you did on the work — shot it, cut it, graded it"
+                placeholder="what you did on the work: shot it, cut it, graded it"
                 className="w-full border border-rule bg-transparent px-3 py-2 text-sm outline-none focus:border-ink"
               />
               <input
                 name="sourceLink"
                 type="url"
                 aria-label="Credits or source link"
-                placeholder="where it ran, or the credits — optional"
+                placeholder="where it ran, or the credits (optional)"
                 className="w-full border border-rule bg-transparent px-3 py-2 text-sm outline-none focus:border-ink"
               />
               <label className="flex items-start gap-3 text-sm leading-relaxed">
@@ -262,7 +262,7 @@ export default function JoinPage() {
                 />
                 <span>
                   hmnty may show my work, roles, city, and availability on the
-                  wall. being on the wall is not agreeing to be introduced —
+                  wall. being on the wall is not agreeing to be introduced.
                   hmnty asks again before handing an employer my contact.
                 </span>
               </label>

@@ -128,7 +128,7 @@ export const ROLES = [
 export const TALENT: Creative[] = [
   {
     id: "c01",
-    name: "Placeholder — Gaffer",
+    name: "Placeholder: Gaffer",
     roles: ["GAFFER"],
     city: "SD",
     availability: "AUG",
@@ -142,7 +142,7 @@ export const TALENT: Creative[] = [
     // confirmed consent + attestation so the wall and detail panel can be
     // demonstrated end to end before real, consenting creatives replace it.
     id: "c02",
-    name: "Placeholder — Colorist",
+    name: "Placeholder: Colorist",
     roles: ["COLORIST"],
     city: "SD",
     availability: "NOW",
@@ -164,7 +164,7 @@ export const TALENT: Creative[] = [
       mayIntroduce: {
         granted: false,
         at: "2026-08-01",
-        statement: "not yet — ask me before handing an employer my contact.",
+        statement: "not yet, ask me before handing an employer my contact.",
       },
     },
     attestation: {
@@ -188,7 +188,7 @@ export const TALENT: Creative[] = [
   },
   {
     id: "c03",
-    name: "Placeholder — UGC",
+    name: "Placeholder: UGC",
     roles: ["UGC"],
     city: "SD",
     availability: "NOW",
@@ -198,7 +198,7 @@ export const TALENT: Creative[] = [
   },
   {
     id: "c04",
-    name: "Placeholder — 1st AC",
+    name: "Placeholder: 1st AC",
     roles: ["1ST AC"],
     city: "SD",
     availability: "AUG",
@@ -207,7 +207,7 @@ export const TALENT: Creative[] = [
   },
   {
     id: "c05",
-    name: "Placeholder — Editor",
+    name: "Placeholder: Editor",
     roles: ["EDITOR"],
     city: "SD",
     availability: "NOW",
@@ -218,7 +218,7 @@ export const TALENT: Creative[] = [
   },
   {
     id: "c06",
-    name: "Placeholder — Sound",
+    name: "Placeholder: Sound",
     roles: ["SOUND"],
     city: "SD",
     availability: "SEP",
@@ -229,7 +229,7 @@ export const TALENT: Creative[] = [
     // Placeholder with an example confirmed consent + full attestation and a
     // curator verification, so the detail panel's authenticity facts render.
     id: "c07",
-    name: "Placeholder — DP",
+    name: "Placeholder: DP",
     roles: ["DP"],
     city: "SD",
     availability: "NOW",
@@ -277,7 +277,7 @@ export const TALENT: Creative[] = [
   },
   {
     id: "c08",
-    name: "Placeholder — Short form",
+    name: "Placeholder: Short form",
     roles: ["UGC", "EDITOR"],
     city: "SD",
     availability: "NOW",
@@ -286,7 +286,7 @@ export const TALENT: Creative[] = [
   },
   {
     id: "c09",
-    name: "Placeholder — Motion",
+    name: "Placeholder: Motion",
     roles: ["MOTION"],
     city: "SD",
     availability: "AUG",
@@ -296,7 +296,7 @@ export const TALENT: Creative[] = [
   },
   {
     id: "c10",
-    name: "Placeholder — Gaffer / DP",
+    name: "Placeholder: Gaffer / DP",
     roles: ["GAFFER", "DP"],
     city: "SD",
     availability: "NOW",
@@ -305,7 +305,7 @@ export const TALENT: Creative[] = [
   },
   {
     id: "c11",
-    name: "Placeholder — UGC",
+    name: "Placeholder: UGC",
     roles: ["UGC"],
     city: "SD",
     availability: "NOW",
@@ -314,7 +314,7 @@ export const TALENT: Creative[] = [
   },
   {
     id: "c12",
-    name: "Placeholder — Editor",
+    name: "Placeholder: Editor",
     roles: ["EDITOR", "MOTION"],
     city: "SD",
     availability: "AUG",

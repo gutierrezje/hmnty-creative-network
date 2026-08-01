@@ -66,7 +66,7 @@ export default function RequestIntro({
       className="fixed inset-0 z-50 overflow-y-auto bg-paper/95 backdrop-blur-sm"
       role="dialog"
       aria-modal="true"
-      aria-label={`${creative.name ?? "Creative work"} — details`}
+      aria-label={`${creative.name ?? "Creative work"}, details`}
     >
       <div className="mx-auto max-w-5xl px-6 py-8 sm:px-10">
         <button onClick={onClose} className="meta text-ash hover:text-ink">
@@ -113,7 +113,7 @@ export default function RequestIntro({
                 curator confirms it while building a shortlist. */}
             {creative.attestation?.ownWork ? (
               <p className="meta mt-4 text-ash">
-                Own work · attested {creative.attestation.at}
+                Own work · confirmed {creative.attestation.at}
                 <br />
                 {creative.attestation.roleOnProject}
                 {sourceLink ? (
@@ -154,14 +154,14 @@ export default function RequestIntro({
               </p>
             ) : !creative.canRequestIntroduction ? (
               <p className="text-sm leading-relaxed text-ash">
-                This creative has not granted permission for an introduction.
-                HMNTY will ask before offering that action.
+                This creative has not said yes to an introduction yet. HMNTY
+                will ask before offering that action.
               </p>
             ) : status === "sent" ? (
               <div>
                 <p className="text-sm">
                   Request received. Someone at HMNTY will make the introduction
-                  by email — you will both be on it.
+                  by email, and you will both be on it.
                 </p>
                 <button onClick={onClose} className="meta mt-4 text-ash hover:text-ink">
                   ← Back to the wall
