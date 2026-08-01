@@ -334,7 +334,8 @@ export const TALENT: Creative[] = [
  */
 export type WallCreative = {
   id: string;
-  name: string;
+  /** Tier B is present only when showToEmployer has been granted. */
+  name?: string;
   roles: string[];
   city: string;
   availability: string;
@@ -343,6 +344,8 @@ export type WallCreative = {
   works: Work[];
   prompts?: PromptAnswer[];
   attestation?: Attestation;
+  /** A display capability, not the underlying private consent record. */
+  canRequestIntroduction: boolean;
 };
 
 /** Does this record clear the consent gate for wall display? Fails closed:
@@ -361,23 +364,30 @@ export function mayAppearOnWall(c: Creative): boolean {
  * Wall component's own filter is defence in depth on top of it.
  */
 export function wallView(talent: Creative[]): WallCreative[] {
-  return talent.filter(mayAppearOnWall).map((c) => ({
-    id: c.id,
-    name: c.name,
-    roles: c.roles,
-    city: c.city,
-    availability: c.availability,
-    rate: c.rate,
-    credit: c.credit,
-    works: c.works,
-    prompts: c.prompts?.slice(0, 3),
-    attestation: c.attestation
-      ? {
-          ownWork: c.attestation.ownWork,
-          roleOnProject: c.attestation.roleOnProject,
-          sourceLink: c.attestation.sourceLink,
-          at: c.attestation.at,
-        }
-      : undefined,
-  }));
+  return talent.filter(mayAppearOnWall).map((c) => {
+    const mayRevealIdentity = c.consent?.showToEmployer.granted === true;
+
+    return {
+      id: c.id,
+      roles: c.roles,
+      city: c.city,
+      availability: c.availability,
+      works: c.works,
+      name: mayRevealIdentity ? c.name : undefined,
+      rate: mayRevealIdentity ? c.rate : undefined,
+      credit: mayRevealIdentity ? c.credit : undefined,
+      prompts: mayRevealIdentity ? c.prompts?.slice(0, 3) : undefined,
+      attestation:
+        mayRevealIdentity && c.attestation
+          ? {
+              ownWork: c.attestation.ownWork,
+              roleOnProject: c.attestation.roleOnProject,
+              sourceLink: c.attestation.sourceLink,
+              at: c.attestation.at,
+            }
+          : undefined,
+      canRequestIntroduction:
+        mayRevealIdentity && c.consent?.mayIntroduce.granted === true,
+    };
+  });
 }

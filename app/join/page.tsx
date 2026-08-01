@@ -105,17 +105,23 @@ export default function JoinPage() {
               <p className="meta text-ash">Your work — one to three links</p>
               <input
                 name="work1"
+                type="url"
                 required
+                aria-label="Primary work link"
                 placeholder="vimeo / youtube / instagram / tiktok link"
                 className="w-full border border-rule bg-transparent px-3 py-2 text-sm outline-none focus:border-ink"
               />
               <input
                 name="work2"
+                type="url"
+                aria-label="Second work link"
                 placeholder="another link (optional)"
                 className="w-full border border-rule bg-transparent px-3 py-2 text-sm outline-none focus:border-ink"
               />
               <input
                 name="work3"
+                type="url"
+                aria-label="Third work link"
                 placeholder="another link (optional)"
                 className="w-full border border-rule bg-transparent px-3 py-2 text-sm outline-none focus:border-ink"
               />
@@ -123,11 +129,12 @@ export default function JoinPage() {
 
             <div className="space-y-3">
               <p className="meta text-ash">Your role(s)</p>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2" role="group" aria-label="Your roles">
                 {ROLES.map((r) => (
                   <button
                     type="button"
                     key={r}
+                    aria-pressed={roles.includes(r)}
                     onClick={() => toggleRole(r)}
                     className={`meta border px-3 py-1.5 transition-colors ${
                       roles.includes(r)
@@ -147,6 +154,7 @@ export default function JoinPage() {
                 <input
                   name="city"
                   required
+                  aria-label="City"
                   placeholder="san diego area"
                   className="w-full border border-rule bg-transparent px-3 py-2 text-sm outline-none focus:border-ink"
                 />
@@ -156,6 +164,7 @@ export default function JoinPage() {
                 <input
                   name="availability"
                   required
+                  aria-label="Availability"
                   placeholder="now, or a month — aug"
                   className="w-full border border-rule bg-transparent px-3 py-2 text-sm outline-none focus:border-ink"
                 />
@@ -167,6 +176,7 @@ export default function JoinPage() {
                 <p className="meta text-ash">Rate — optional, reveal-only</p>
                 <input
                   name="rate"
+                  aria-label="Rate"
                   placeholder="$/day, $/hr, or per spot"
                   className="w-full border border-rule bg-transparent px-3 py-2 text-sm outline-none focus:border-ink"
                 />
@@ -175,6 +185,7 @@ export default function JoinPage() {
                 <p className="meta text-ash">Credit — optional, one line</p>
                 <input
                   name="credit"
+                  aria-label="Credit"
                   placeholder="one credit line"
                   className="w-full border border-rule bg-transparent px-3 py-2 text-sm outline-none focus:border-ink"
                 />
@@ -187,6 +198,7 @@ export default function JoinPage() {
                 name="contactEmail"
                 type="email"
                 required
+                aria-label="Contact email"
                 placeholder="email — published to no one"
                 className="w-full border border-rule bg-transparent px-3 py-2 text-sm outline-none focus:border-ink"
               />
@@ -197,18 +209,21 @@ export default function JoinPage() {
               <textarea
                 name="prompt1"
                 rows={2}
+                aria-label="The shot you are proudest of"
                 placeholder="the shot you are proudest of"
                 className="w-full border border-rule bg-transparent px-3 py-2 text-sm outline-none focus:border-ink"
               />
               <textarea
                 name="prompt2"
                 rows={2}
+                aria-label="How you like to work"
                 placeholder="how you like to work"
                 className="w-full border border-rule bg-transparent px-3 py-2 text-sm outline-none focus:border-ink"
               />
               <textarea
                 name="prompt3"
                 rows={2}
+                aria-label="One thing your reel does not show"
                 placeholder="one thing your reel does not show"
                 className="w-full border border-rule bg-transparent px-3 py-2 text-sm outline-none focus:border-ink"
               />
@@ -219,11 +234,14 @@ export default function JoinPage() {
               <input
                 name="roleOnProject"
                 required
+                aria-label="Your role on the submitted work"
                 placeholder="what you did on the work — shot it, cut it, graded it"
                 className="w-full border border-rule bg-transparent px-3 py-2 text-sm outline-none focus:border-ink"
               />
               <input
                 name="sourceLink"
+                type="url"
+                aria-label="Credits or source link"
                 placeholder="where it ran, or the credits — optional"
                 className="w-full border border-rule bg-transparent px-3 py-2 text-sm outline-none focus:border-ink"
               />
@@ -253,13 +271,13 @@ export default function JoinPage() {
             <div className="space-y-3">
               <button
                 type="submit"
-                disabled={status === "sending"}
+                disabled={status === "sending" || roles.length === 0}
                 className="meta w-full bg-ink px-4 py-3 text-paper transition-opacity hover:opacity-85 disabled:opacity-50"
               >
                 {status === "sending" ? "Sending…" : "Add your work"}
               </button>
               {status === "error" ? (
-                <p className="meta text-ash">
+                <p className="meta text-ash" role="alert">
                   Something failed. Try again, or email HMNTY directly.
                 </p>
               ) : null}

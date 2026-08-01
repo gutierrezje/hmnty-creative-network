@@ -5,6 +5,16 @@ import type { WallCreative } from "@/data/talent";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
+function externalHttpUrl(value?: string): string | undefined {
+  if (!value) return undefined;
+  try {
+    const url = new URL(value);
+    return url.protocol === "http:" || url.protocol === "https:" ? value : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
 /**
  * The reveal and the ask, in one panel.
  *
@@ -21,6 +31,7 @@ export default function RequestIntro({
   onClose: () => void;
 }) {
   const [status, setStatus] = useState<Status>("idle");
+  const sourceLink = externalHttpUrl(creative.attestation?.sourceLink);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
@@ -55,7 +66,7 @@ export default function RequestIntro({
       className="fixed inset-0 z-50 overflow-y-auto bg-paper/95 backdrop-blur-sm"
       role="dialog"
       aria-modal="true"
-      aria-label={`${creative.name} — request an introduction`}
+      aria-label={`${creative.name ?? "Creative work"} — details`}
     >
       <div className="mx-auto max-w-5xl px-6 py-8 sm:px-10">
         <button onClick={onClose} className="meta text-ash hover:text-ink">
@@ -79,7 +90,9 @@ export default function RequestIntro({
           </div>
 
           <div className="md:sticky md:top-8 md:self-start">
-            <h2 className="text-4xl tracking-tight">{creative.name}</h2>
+            <h2 className="text-4xl tracking-tight">
+              {creative.name ?? "Identity held by HMNTY"}
+            </h2>
             <p className="meta mt-3 text-ash">
               {creative.roles.join(" · ")}
               <br />
@@ -103,11 +116,11 @@ export default function RequestIntro({
                 Own work · attested {creative.attestation.at}
                 <br />
                 {creative.attestation.roleOnProject}
-                {creative.attestation.sourceLink ? (
+                {sourceLink ? (
                   <>
                     <br />
                     <a
-                      href={creative.attestation.sourceLink}
+                      href={sourceLink}
                       target="_blank"
                       rel="noreferrer"
                       className="underline hover:text-ink"
@@ -134,7 +147,17 @@ export default function RequestIntro({
 
             <hr className="my-6 border-rule" />
 
-            {status === "sent" ? (
+            {!creative.name ? (
+              <p className="text-sm leading-relaxed text-ash">
+                HMNTY has permission to show this work, but not to reveal this
+                creative&apos;s identity. A curator must obtain that permission first.
+              </p>
+            ) : !creative.canRequestIntroduction ? (
+              <p className="text-sm leading-relaxed text-ash">
+                This creative has not granted permission for an introduction.
+                HMNTY will ask before offering that action.
+              </p>
+            ) : status === "sent" ? (
               <div>
                 <p className="text-sm">
                   Request received. Someone at HMNTY will make the introduction
@@ -151,18 +174,21 @@ export default function RequestIntro({
                   name="from"
                   type="email"
                   required
+                  aria-label="Your email"
                   placeholder="your email"
                   className="w-full border border-rule bg-transparent px-3 py-2 text-sm outline-none focus:border-ink"
                 />
                 <input
                   name="org"
                   required
+                  aria-label="Your company or organization"
                   placeholder="your company or organization"
                   className="w-full border border-rule bg-transparent px-3 py-2 text-sm outline-none focus:border-ink"
                 />
                 <textarea
                   name="project"
                   required
+                  aria-label="Project details"
                   rows={3}
                   placeholder="what's the project? dates, budget range, what you need"
                   className="w-full border border-rule bg-transparent px-3 py-2 text-sm outline-none focus:border-ink"

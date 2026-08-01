@@ -1,19 +1,19 @@
 import { NextResponse } from "next/server";
+import { ROLES } from "@/data/talent";
 
 /**
  * The intake endpoint. Deliberately not a database.
  *
- * It carries three payload kinds, all handled the same way: validate the
- * fields, always `console.log` so nothing is silently lost, and email the
- * HMNTY inbox via Resend only when RESEND_API_KEY + INTRO_INBOX are set. A
- * table nobody checks does not get a person's attention; email does.
+ * It carries three payload kinds, all handled the same way: cap and validate
+ * the fields, then email the HMNTY inbox. Participant details never go to
+ * runtime logs; if email is unavailable, the endpoint fails visibly.
  *
  * - "intro" — an employer requests a warm introduction to a creative.
  * - "self-intake" — a creative adds their own work (/join), with self-consent.
  * - "referral" — someone vouches for a creative (/refer). A referral is a
  *   sourcing signal, never a gate. Nothing about the referred person is
- *   published until they confirm and consent themselves — a curator promotes
- *   them into TALENT by hand only after that round-trip.
+ *   published until they confirm and consent themselves — a curator decides
+ *   the appropriate follow-up and promotes them only after that round-trip.
  *
  * In every case a named HMNTY curator, not this endpoint, decides who reaches
  * the wall. AI may normalize the fields; it admits no one.
@@ -24,14 +24,43 @@ type Kind = "intro" | "self-intake" | "referral";
 const RELATIONSHIPS = ["peer", "partner-org-sdsu", "curator", "employer"] as const;
 type Relationship = (typeof RELATIONSHIPS)[number];
 
+const MAX_BODY_BYTES = 64_000;
+const MAX_FIELD_LENGTH = 2_000;
+
 function str(v: unknown): string {
-  return typeof v === "string" ? v.trim() : "";
+  return typeof v === "string" ? v.trim().slice(0, MAX_FIELD_LENGTH) : "";
+}
+
+function isEmail(value: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+}
+
+function isHttpUrl(value: string): boolean {
+  try {
+    const url = new URL(value);
+    return url.protocol === "http:" || url.protocol === "https:";
+  } catch {
+    return false;
+  }
 }
 
 export async function POST(req: Request) {
+  const declaredLength = Number(req.headers.get("content-length"));
+  if (Number.isFinite(declaredLength) && declaredLength > MAX_BODY_BYTES) {
+    return NextResponse.json({ error: "body too large" }, { status: 413 });
+  }
+
   let body: Record<string, unknown>;
   try {
-    body = (await req.json()) ?? {};
+    const raw = await req.text();
+    if (new TextEncoder().encode(raw).byteLength > MAX_BODY_BYTES) {
+      return NextResponse.json({ error: "body too large" }, { status: 413 });
+    }
+    const parsed: unknown = JSON.parse(raw);
+    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+      return NextResponse.json({ error: "invalid body" }, { status: 400 });
+    }
+    body = parsed as Record<string, unknown>;
   } catch {
     return NextResponse.json({ error: "invalid body" }, { status: 400 });
   }
@@ -49,7 +78,7 @@ export async function POST(req: Request) {
     const org = str(body.org);
     const project = str(body.project);
 
-    if (!creativeId || !from || !org || !project) {
+    if (!creativeId || !isEmail(from) || !org || !project) {
       return NextResponse.json({ error: "missing fields" }, { status: 400 });
     }
 
@@ -68,16 +97,17 @@ export async function POST(req: Request) {
     // self-consent: the person entered their own work in the same form.
     const name = str(body.name);
     const roles = Array.isArray(body.roles)
-      ? (body.roles as unknown[]).map(str).filter(Boolean)
+      ? (body.roles as unknown[]).map(str).filter(Boolean).slice(0, ROLES.length)
       : [];
     const city = str(body.city);
     const availability = str(body.availability);
     const works = Array.isArray(body.works)
-      ? (body.works as unknown[]).map(str).filter(Boolean)
+      ? (body.works as unknown[]).map(str).filter(Boolean).slice(0, 3)
       : [];
     const roleOnProject = str(body.roleOnProject);
     const ownWork = body.ownWork === true;
     const consentToShow = body.consentToShow === true;
+    const contactEmail = str(body.contactEmail);
 
     // Required: identity, at least one role, city, availability, at least one
     // viewable work, a stated role on the project, the own-work attestation,
@@ -86,12 +116,15 @@ export async function POST(req: Request) {
     if (
       !name ||
       roles.length === 0 ||
+      roles.some((role) => !ROLES.includes(role as (typeof ROLES)[number])) ||
       !city ||
       !availability ||
       works.length === 0 ||
+      works.some((work) => !isHttpUrl(work)) ||
       !roleOnProject ||
       !ownWork ||
-      !consentToShow
+      !consentToShow ||
+      !isEmail(contactEmail)
     ) {
       return NextResponse.json({ error: "missing fields" }, { status: 400 });
     }
@@ -99,6 +132,9 @@ export async function POST(req: Request) {
     const rate = str(body.rate);
     const credit = str(body.credit);
     const sourceLink = str(body.sourceLink);
+    if (sourceLink && !isHttpUrl(sourceLink)) {
+      return NextResponse.json({ error: "invalid source link" }, { status: 400 });
+    }
     const prompts = Array.isArray(body.prompts)
       ? (body.prompts as unknown[])
           .map((p) => {
@@ -116,6 +152,7 @@ export async function POST(req: Request) {
       `Roles: ${roles.join(", ")}`,
       `City: ${city}`,
       `Availability: ${availability}`,
+      `Contact: ${contactEmail}`,
       rate ? `Rate: ${rate}` : `Rate: (not given)`,
       credit ? `Credit: ${credit}` : `Credit: (not given)`,
       ``,
@@ -144,11 +181,11 @@ export async function POST(req: Request) {
 
     if (
       !referrerName ||
-      !referrerEmail ||
+      !isEmail(referrerEmail) ||
       !RELATIONSHIPS.includes(relationship) ||
       !referredName ||
-      !referredContact ||
-      !workLink
+      !isEmail(referredContact) ||
+      !isHttpUrl(workLink)
     ) {
       return NextResponse.json({ error: "missing fields" }, { status: 400 });
     }
@@ -172,23 +209,24 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "unknown kind" }, { status: 400 });
   }
 
-  // Always logged, so a submission is never silently lost even if email is not
-  // configured yet — visible in `vercel logs` during the event.
-  console.log(`[intake:${kind}]\n` + summary);
-
   const key = process.env.RESEND_API_KEY;
   const to = process.env.INTRO_INBOX;
 
-  if (key && to) {
-    // For intro and self-intake the sender's own email is a sensible reply-to;
-    // a referral replies to the referrer, not the referred person.
-    const replyTo =
-      kind === "intro"
-        ? str(body.from)
-        : kind === "referral"
-          ? str(body.referrerEmail)
-          : str(body.contactEmail) || undefined;
+  if (!key || !to) {
+    console.error(`[intake:${kind}] delivery unavailable`);
+    return NextResponse.json({ error: "delivery unavailable" }, { status: 503 });
+  }
 
+  // For intro and self-intake the sender's own email is a sensible reply-to;
+  // a referral replies to the referrer, not the referred person.
+  const replyTo =
+    kind === "intro"
+      ? str(body.from)
+      : kind === "referral"
+        ? str(body.referrerEmail)
+        : str(body.contactEmail);
+
+  try {
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
@@ -198,17 +236,20 @@ export async function POST(req: Request) {
       body: JSON.stringify({
         from: "HMNTY Wall <onboarding@resend.dev>",
         to: [to],
-        ...(replyTo ? { reply_to: replyTo } : {}),
+        reply_to: replyTo,
         subject,
         text: summary,
       }),
     });
     if (!res.ok) {
-      console.error(`[intake:${kind}] email failed`, await res.text());
-      // The submission is already logged, so still report success to the
-      // sender rather than asking them to retype everything.
+      console.error(`[intake:${kind}] delivery failed with ${res.status}`);
+      return NextResponse.json({ error: "delivery failed" }, { status: 502 });
     }
+  } catch {
+    console.error(`[intake:${kind}] delivery failed`);
+    return NextResponse.json({ error: "delivery failed" }, { status: 502 });
   }
 
+  console.log(`[intake:${kind}] delivered`);
   return NextResponse.json({ ok: true });
 }

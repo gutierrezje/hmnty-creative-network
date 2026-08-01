@@ -72,9 +72,9 @@ export default function ReferPage() {
         {status === "sent" ? (
           <div>
             <p className="text-sm leading-relaxed">
-              Referral received. HMNTY reaches out to the person you named and
-              asks them to confirm their details and choose what may be shown.
-              Nothing appears until they do.
+              Referral received. HMNTY reviews the work and decides the
+              appropriate follow-up. Nothing appears until the creative confirms
+              their details and chooses what may be shown.
             </p>
             <Link href="/" className="meta mt-6 inline-block text-ash hover:text-ink">
               ← Back to the wall
@@ -87,6 +87,7 @@ export default function ReferPage() {
               <input
                 name="referrerName"
                 required
+                aria-label="Your name"
                 placeholder="your name"
                 className="w-full border border-rule bg-transparent px-3 py-2 text-sm outline-none focus:border-ink"
               />
@@ -94,6 +95,7 @@ export default function ReferPage() {
                 name="referrerEmail"
                 type="email"
                 required
+                aria-label="Your email"
                 placeholder="your email"
                 className="w-full border border-rule bg-transparent px-3 py-2 text-sm outline-none focus:border-ink"
               />
@@ -101,11 +103,16 @@ export default function ReferPage() {
 
             <div className="space-y-3">
               <p className="meta text-ash">How you know the work</p>
-              <div className="flex flex-wrap gap-2">
+              <div
+                className="flex flex-wrap gap-2"
+                role="group"
+                aria-label="How you know the work"
+              >
                 {RELATIONSHIPS.map((r) => (
                   <button
                     type="button"
                     key={r.value}
+                    aria-pressed={relationship === r.value}
                     onClick={() => setRelationship(r.value)}
                     className={`meta border px-3 py-1.5 transition-colors ${
                       relationship === r.value
@@ -124,18 +131,23 @@ export default function ReferPage() {
               <input
                 name="referredName"
                 required
+                aria-label="Referred creative's name"
                 placeholder="their name"
                 className="w-full border border-rule bg-transparent px-3 py-2 text-sm outline-none focus:border-ink"
               />
               <input
                 name="referredContact"
+                type="email"
                 required
+                aria-label="Referred creative's email"
                 placeholder="a way to reach them — email"
                 className="w-full border border-rule bg-transparent px-3 py-2 text-sm outline-none focus:border-ink"
               />
               <input
                 name="workLink"
+                type="url"
                 required
+                aria-label="Link to the referred creative's work"
                 placeholder="one link to their work — the whole point is the work"
                 className="w-full border border-rule bg-transparent px-3 py-2 text-sm outline-none focus:border-ink"
               />
@@ -146,6 +158,7 @@ export default function ReferPage() {
               <textarea
                 name="note"
                 rows={3}
+                aria-label="Why you are referring this creative"
                 placeholder="what you have seen them do"
                 className="w-full border border-rule bg-transparent px-3 py-2 text-sm outline-none focus:border-ink"
               />
@@ -160,7 +173,7 @@ export default function ReferPage() {
                 {status === "sending" ? "Sending…" : "Send referral"}
               </button>
               {status === "error" ? (
-                <p className="meta text-ash">
+                <p className="meta text-ash" role="alert">
                   Something failed. Try again, or email HMNTY directly.
                 </p>
               ) : null}
