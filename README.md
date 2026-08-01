@@ -4,6 +4,8 @@ HMNTY Creative Network is a work-first introduction network for San Diego creati
 
 The current prototype is intentionally narrow. It is being built to prove one complete loop with real people, not to imitate a mature self-serve marketplace.
 
+The team alignment contract for the event is [VISION.md](./VISION.md).
+
 ## Pilot destination
 
 Produce an evidence-backed pilot that connects one real San Diego employer project to one real local creative through an HMNTY-curated introduction, while leaving behind a clear product direction the team can continue after the hackathon.
