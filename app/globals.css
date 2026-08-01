@@ -37,11 +37,13 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Statements are Anton: enormous condensed display type, never below 32px. */
-h1,
-h2,
-h3 {
-  font-family: var(--font-display);
+@layer base {
+  /* Statements are Anton: enormous condensed display type, never below 32px. */
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+  }
 }
 
 /* Metadata reads like a call sheet: uppercase, monospace, widely tracked. */
