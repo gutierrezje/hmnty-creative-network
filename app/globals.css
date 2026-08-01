@@ -4,21 +4,44 @@
   The chrome is greyscale on purpose. The work is the only saturated
   colour anywhere on the page — every card is someone's reel, and nothing
   in the interface should compete with it.
+
+  Tokens reconciled to DESIGN.md front matter (black on pure white). The
+  paper/ink/ash names are the classname-facing aliases already in use across
+  the components; the semantic names below mirror the DESIGN.md palette.
 */
 @theme {
-  --color-paper: #fafaf8;
-  --color-ink: #111111;
-  --color-ash: #6b6b66;
-  --color-rule: #e2e1dc;
+  /* DESIGN.md palette */
+  --color-primary: #000000;
+  --color-secondary: #6b6b6b;
+  --color-surface: #ffffff;
+  --color-surface-sunken: #f4f4f2;
+  --color-rule: #e4e4e2;
+  --color-frame: #0a0a0a;
+  --color-error: #b23b2e;
 
+  /* Classname-facing aliases already referenced by the components. */
+  --color-paper: #ffffff;
+  --color-ink: #000000;
+  --color-ash: #6b6b6b;
+
+  /* Anton = display (statements). Inter = body (sentences). JetBrains Mono = metadata (facts). */
+  --font-display: var(--font-display), ui-sans-serif, system-ui, sans-serif;
   --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-mono), ui-monospace, monospace;
 }
 
 body {
-  background: var(--color-paper);
-  color: var(--color-ink);
+  background: var(--color-surface);
+  color: var(--color-primary);
+  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+}
+
+/* Statements are Anton: enormous condensed display type, never below 32px. */
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
 }
 
 /* Metadata reads like a call sheet: uppercase, monospace, widely tracked. */
