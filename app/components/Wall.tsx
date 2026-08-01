@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import type { Creative } from "@/data/talent";
+import type { WallCreative } from "@/data/talent";
 import { ROLES } from "@/data/talent";
 import RequestIntro from "./RequestIntro";
 
@@ -18,7 +18,7 @@ function frameStyle(id: string) {
   return { backgroundColor: `hsl(0 0% ${lightness}%)` };
 }
 
-function Frame({ creative }: { creative: Creative }) {
+function Frame({ creative }: { creative: WallCreative }) {
   const work = creative.works[0];
   const ratio = work.aspect === "9:16" ? "9 / 16" : "16 / 9";
 
@@ -39,11 +39,14 @@ function Frame({ creative }: { creative: Creative }) {
   );
 }
 
-export default function Wall({ talent }: { talent: Creative[] }) {
+export default function Wall({ talent }: { talent: WallCreative[] }) {
   const [role, setRole] = useState<string | null>(null);
   const [availableNow, setAvailableNow] = useState(false);
-  const [open, setOpen] = useState<Creative | null>(null);
+  const [open, setOpen] = useState<WallCreative | null>(null);
 
+  // The consent gate already ran on the server (see wallView) — `talent` here
+  // is only records cleared to appear, with tier-C fields stripped. This is
+  // the ordinary role/availability filter on top of that safe set.
   const shown = useMemo(
     () =>
       talent.filter(

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { Creative } from "@/data/talent";
+import type { WallCreative } from "@/data/talent";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
@@ -17,7 +17,7 @@ export default function RequestIntro({
   creative,
   onClose,
 }: {
-  creative: Creative;
+  creative: WallCreative;
   onClose: () => void;
 }) {
   const [status, setStatus] = useState<Status>("idle");
@@ -93,6 +93,43 @@ export default function RequestIntro({
             </p>
             {creative.credit ? (
               <p className="mt-4 text-sm text-ash">{creative.credit}</p>
+            ) : null}
+
+            {/* Authenticity, as call-sheet facts — not a badge, not a checkmark.
+                The creative attested this is their own work at intake; a named
+                curator confirms it while building a shortlist. */}
+            {creative.attestation?.ownWork ? (
+              <p className="meta mt-4 text-ash">
+                Own work · attested {creative.attestation.at}
+                <br />
+                {creative.attestation.roleOnProject}
+                {creative.attestation.sourceLink ? (
+                  <>
+                    <br />
+                    <a
+                      href={creative.attestation.sourceLink}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="underline hover:text-ink"
+                    >
+                      source
+                    </a>
+                  </>
+                ) : null}
+              </p>
+            ) : null}
+
+            {/* Up to three prompts: a mono label, an Inter answer. Prompts live
+                only here — never on a card, never filterable. */}
+            {creative.prompts?.length ? (
+              <dl className="mt-6 space-y-4">
+                {creative.prompts.slice(0, 3).map((p) => (
+                  <div key={p.prompt}>
+                    <dt className="meta text-ash">{p.prompt}</dt>
+                    <dd className="mt-1 text-sm leading-relaxed">{p.answer}</dd>
+                  </div>
+                ))}
+              </dl>
             ) : null}
 
             <hr className="my-6 border-rule" />

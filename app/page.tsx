@@ -1,5 +1,6 @@
+import Link from "next/link";
 import Wall from "./components/Wall";
-import { TALENT } from "@/data/talent";
+import { TALENT, wallView } from "@/data/talent";
 
 export default function Home() {
   return (
@@ -14,9 +15,22 @@ export default function Home() {
           no networks until you have seen what someone made. When you find
           someone, a person at HMNTY makes the introduction.
         </p>
+        <p className="meta mt-6 text-ash">
+          <Link href="/join" className="hover:text-ink">
+            Add your work
+          </Link>
+          <span className="mx-3" aria-hidden>
+            ·
+          </span>
+          <Link href="/refer" className="hover:text-ink">
+            Vouch for someone
+          </Link>
+        </p>
       </header>
 
-      <Wall talent={TALENT} />
+      {/* The consent gate runs on the server here: only wall-safe records, with
+          tier-C fields stripped, ever reach the browser. */}
+      <Wall talent={wallView(TALENT)} />
 
       <footer className="border-t border-rule px-6 py-10 sm:px-10">
         <p className="meta text-ash">
