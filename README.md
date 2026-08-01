@@ -4,6 +4,8 @@ HMNTY Creative Network is a work-first introduction network for San Diego creati
 
 The current prototype is intentionally narrow. It is being built to prove one complete loop with real people, not to imitate a mature self-serve marketplace.
 
+The team alignment contract for the event is [VISION.md](./VISION.md).
+
 ## Pilot destination
 
 Produce an evidence-backed pilot that connects one real San Diego employer project to one real local creative through an HMNTY-curated introduction, while leaving behind a clear product direction the team can continue after the hackathon.
@@ -64,6 +66,6 @@ pnpm build
 
 Read [AGENTS.md](./AGENTS.md), [CLAUDE.md](./CLAUDE.md), and [CONTEXT.md](./CONTEXT.md) before contributing.
 
-All changes use pull requests. Direct pushes to `main` are not part of the team workflow. The repository owner, `@gutierrezje`, merges after the build passes and at least one teammate approves.
+All changes use pull requests. Direct pushes to `main` are not part of the team workflow. The repository owner, `@gutierrezje`, merges after the build passes. Teammate reviews are welcome but optional and never a merge gate.
 
 Product decisions are tracked in the repository's [Wayfinder issues](https://github.com/gutierrezje/hmnty-creative-network/issues). Claim an open, unblocked decision ticket before working on it.
