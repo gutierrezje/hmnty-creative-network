@@ -6,18 +6,16 @@ import { ROLES } from "@/data/talent";
 import RequestIntro from "./RequestIntro";
 
 /**
- * Stand-in for a reel still. Deterministic per creative so the wall looks
- * composed rather than random, and muted so it never out-shouts real footage
- * once teammates swap in actual posters.
+ * Stand-in for a reel still — a skeleton, not decoration.
+ *
+ * Greyscale and flat by DESIGN.md § Colors: the work is the only colour on the
+ * page, so a placeholder must not invent one. Lightness varies deterministically
+ * per creative so the wall reads as composed rather than as one grey slab.
  */
 function frameStyle(id: string) {
   const seed = [...id].reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
-  const hue = (seed * 47) % 360;
-  return {
-    backgroundImage: `linear-gradient(145deg, hsl(${hue} 16% 20%), hsl(${
-      (hue + 40) % 360
-    } 20% 44%))`,
-  };
+  const lightness = 12 + (seed % 5) * 6;
+  return { backgroundColor: `hsl(0 0% ${lightness}%)` };
 }
 
 function Frame({ creative }: { creative: Creative }) {
@@ -63,7 +61,7 @@ export default function Wall({ talent }: { talent: Creative[] }) {
       <div className="flex flex-wrap items-center gap-2 border-b border-rule px-6 py-4 sm:px-10">
         <button
           onClick={() => setRole(null)}
-          className={`meta rounded-full border px-3 py-1.5 transition-colors ${
+          className={`meta border px-3 py-1.5 transition-colors ${
             role === null
               ? "border-ink bg-ink text-paper"
               : "border-rule text-ash hover:border-ink hover:text-ink"
@@ -75,7 +73,7 @@ export default function Wall({ talent }: { talent: Creative[] }) {
           <button
             key={r}
             onClick={() => setRole(role === r ? null : r)}
-            className={`meta rounded-full border px-3 py-1.5 transition-colors ${
+            className={`meta border px-3 py-1.5 transition-colors ${
               role === r
                 ? "border-ink bg-ink text-paper"
                 : "border-rule text-ash hover:border-ink hover:text-ink"
@@ -87,7 +85,7 @@ export default function Wall({ talent }: { talent: Creative[] }) {
         <span className="mx-1 h-4 w-px bg-rule" aria-hidden />
         <button
           onClick={() => setAvailableNow((v) => !v)}
-          className={`meta rounded-full border px-3 py-1.5 transition-colors ${
+          className={`meta border px-3 py-1.5 transition-colors ${
             availableNow
               ? "border-ink bg-ink text-paper"
               : "border-rule text-ash hover:border-ink hover:text-ink"

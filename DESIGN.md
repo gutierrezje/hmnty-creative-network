@@ -149,6 +149,30 @@ white space, hairline rules, hard-edged rectangles. It should feel like a film
 title card and a production document at the same time — never like a SaaS
 dashboard, never like a social network.
 
+### Reference points
+
+Build toward these:
+
+- **Criterion Collection release pages** — large type, generous margins, the
+  artwork carrying the page.
+- **A physical call sheet** — monospace facts in ruled rows, zero decoration,
+  designed to be read fast on set.
+- **Vimeo Staff Picks, circa 2015** — a wall of thumbnails and almost no chrome.
+- **A24 title cards** — condensed caps, black and white, unafraid of scale.
+
+Build *away* from these. If a screen starts resembling one, it has drifted:
+
+- **Linear, Stripe, and every landing page derived from them** — the current
+  default aesthetic of generated code, and the strongest gravitational pull on
+  any agent working in this repo.
+- **Framer and Webflow marketing templates.**
+- **Dribbble "SaaS dashboard" shots** — rounded cards, soft shadows, violet
+  accents, an icon in every corner.
+
+The anti-references matter as much as the references. This document exists
+largely to counteract the fact that an unconstrained model will produce the
+second list by default.
+
 ## Colors
 
 The palette is black on white, full stop. Greys exist only to recede.
@@ -287,6 +311,44 @@ answer in `body-lg`. Maximum three per profile. Prompts never appear on cards
 and are never filterable — the moment personality becomes a browsing dimension,
 the bias the wall exists to remove comes straight back in.
 
+## Motion
+
+Opacity and cross-fade only, 150ms, standard ease. Nothing else.
+
+No transforms, no scale-on-hover, no scroll-triggered reveals, no staggered
+entrances, no parallax, no skeleton shimmer. Video is the only thing on the page
+that is allowed to move, and page furniture that animates around it steals
+attention the work has already earned.
+
+A wall that renders instantly and sits still is the correct behaviour, not a
+missing feature.
+
+## Iconography
+
+There are none, and no icon library is installed.
+
+Labels are words. A filter chip says `GAFFER`, not a lens glyph. If a control
+needs an icon to be understandable, the label is wrong.
+
+This is written as a dependency rule rather than a taste rule on purpose:
+adding an icon set has to show up in a diff as a package install, where it can
+be argued about, instead of arriving quietly one component at a time.
+
+## Voice
+
+The copy is part of the identity, and generic copy undoes good typography.
+
+Lowercase or sentence case. Declarative. Short. Say the true specific thing:
+"the reel is the résumé," "a person reads every request," "no names, no schools."
+
+Never: exclamation marks, emoji, "seamlessly," "empower," "unlock,"
+"revolutionize," "supercharge," "everything you need to ___," "get started in
+seconds," or a rhetorical question as a headline.
+
+The test: **if a sentence could appear on any other startup's site, delete it.**
+Every line should only be sayable by this product, about these people, in this
+city.
+
 ## Do's and Don'ts
 
 - **Do** keep the wall free of names, headshots, schools, and years of
@@ -307,3 +369,40 @@ the bias the wall exists to remove comes straight back in.
 - **Do** maintain WCAG AA. Black on white and `#6B6B6B` on white are the only
   approved text pairings.
 - **Don't** use more than two type sizes of the same face on one screen.
+
+### Known tells
+
+These are the specific patterns a model reaches for when left unconstrained.
+Each one is banned outright; treat any of them appearing in a diff as a defect,
+not a style preference.
+
+- A centred hero with a blurred colour blob or gradient mesh behind it
+- Three feature cards in a row, each with an icon at the top
+- Gradient-filled text on one word of the headline
+- A "trusted by" logo strip
+- Emoji in headings, buttons, or list bullets
+- `rounded-2xl` + `shadow-lg` card grids
+- Indigo, violet, or purple used as an accent — or any accent at all
+- Glassmorphism: translucent panels with a backdrop blur over a colourful ground
+- Fade-up-on-scroll, staggered list entrances, animated counters
+- A dark mode toggle nobody asked for
+- Default framework focus rings in blue
+- Microcopy in the shape of "Everything you need to ___" or "___ in seconds"
+- Decorative dividers, badges, or pill-shaped tags used as ornament
+
+### The closed vocabulary
+
+Every screen in this product is assemblable from exactly five elements:
+
+1. Black text
+2. White ground
+3. A 1px hairline rule
+4. A 16:9 or 9:16 frame containing somebody's work
+5. Monospace metadata
+
+If a screen appears to need a sixth element, that is a design question for a
+human, not a gap to fill. Ask before inventing one.
+
+This constraint is the real protection. The lists above enumerate what to avoid,
+and any enumeration is incomplete; a closed vocabulary cannot produce slop
+because slop requires reaching outside it.
