@@ -1,12 +1,21 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Anton, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
+// Statements are Anton. Anton ships a single weight (400), the display face.
+const display = Anton({
+  variable: "--font-display",
+  weight: "400",
+  subsets: ["latin"],
+});
+
+// Sentences are Inter.
 const sans = Inter({
   variable: "--font-sans",
   subsets: ["latin"],
 });
 
+// Facts are JetBrains Mono.
 const mono = JetBrains_Mono({
   variable: "--font-mono",
   subsets: ["latin"],
@@ -26,7 +35,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${sans.variable} ${mono.variable} h-full antialiased`}
+      className={`${display.variable} ${sans.variable} ${mono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>

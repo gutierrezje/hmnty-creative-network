@@ -79,7 +79,7 @@ export default function RequestIntro({
           </div>
 
           <div className="md:sticky md:top-8 md:self-start">
-            <h2 className="text-3xl tracking-tight">{creative.name}</h2>
+            <h2 className="text-4xl tracking-tight">{creative.name}</h2>
             <p className="meta mt-3 text-ash">
               {creative.roles.join(" · ")}
               <br />
