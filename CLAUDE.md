@@ -2,6 +2,7 @@
 
 @AGENTS.md
 @CONTEXT.md
+@DESIGN.md
 
 Follow `AGENTS.md` as the repository's complete operating policy. The rules below clarify how Claude sessions should collaborate during the pilot.
 
