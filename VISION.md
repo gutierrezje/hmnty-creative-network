@@ -28,9 +28,19 @@ By the final showcase, the team should be able to demonstrate and document:
 2. **A credible talent pool.** Enough real profiles to produce a meaningful shortlist for the chosen brief; target eight or more, but never pad the Wall with invented people.
 3. **A real employer brief.** A San Diego organization describes credible paid creative work, including timing, needs, and whatever budget context it can share.
 4. **An HMNTY-approved shortlist.** A named curator selects relevant creatives and can explain why each belongs. AI may assist; it does not make the decision.
-5. **An accepted introduction.** The employer explicitly asks to meet at least one shortlisted creative. If both parties consent in time, HMNTY sends the introduction.
-6. **An evidence package.** The team preserves consent, the brief, shortlist rationale, employer response, introduction status, screenshots, timestamps, and what changed after feedback.
+5. **An accepted introduction.** The employer explicitly asks to meet at least one shortlisted creative. Employer acceptance completes the weekend validation threshold; sending the introduction requires the creative's separate consent and is a strong stretch outcome.
+6. **An evidence package.** The team preserves consent, the brief, shortlist rationale, employer response, introduction status, screenshots, timestamps, and what changed after feedback, following the privacy boundary below.
 7. **A five-minute story.** The showcase follows the real journey from brief to introduction and distinguishes shipped evidence from future vision.
+
+## Evidence privacy boundary
+
+Public evidence may include participant-approved portfolio links, aggregate counts, redacted screenshots, a non-confidential brief summary, the curator's process, and the introduction status.
+
+Private evidence includes raw briefs, consent records, names or contact details that were not approved for display, employer correspondence, rates or budgets, and detailed shortlist notes. Access stays with the HMNTY owner and teammates who need it to operate or evaluate the pilot.
+
+Before anything is shared publicly, remove email addresses, phone numbers, private message content, unapproved names, confidential rates or budgets, and identifying metadata. Consent must separately cover public display and private evidence retention; agreement to one does not imply agreement to the other.
+
+Retain private evidence only through pilot evaluation and necessary follow-up. The HMNTY owner should review it within 30 days and delete anything without an ongoing operational or legal need.
 
 ## The human and AI boundary
 
@@ -56,8 +66,9 @@ The weekend is successful when all of these are true:
 - [ ] Published creatives are real and gave permission.
 - [ ] At least one real paid-work brief is preserved.
 - [ ] A named HMNTY curator approved a shortlist.
-- [ ] The employer accepted an introduction to at least one creative.
-- [ ] The team can show receipts for the complete loop.
+- [ ] The employer accepted an introduction to at least one creative, completing the weekend validation threshold.
+- [ ] The team can show receipts from the brief through employer acceptance.
+- [ ] Public evidence is consented and redacted; private evidence has an owner and retention plan.
 - [ ] The team can explain what it learned and what it deliberately did not build.
 
 Strong stretch outcomes include sending the introduction, scheduling a conversation, receiving a hiring commitment, or booking paid work. These deepen the evidence but do not justify neglecting the required loop.
