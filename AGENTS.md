@@ -39,7 +39,7 @@ Keep authentication, direct messaging, payments, hosted video, national expansio
 - Keep one active owner per task and file area. Coordinate before editing a file another teammate owns.
 - Make the smallest coherent change that advances a claimed issue.
 - Open a pull request using the repository template.
-- Require a passing `build` check and one non-author approval.
+- Require a passing `build` check. Reviews are encouraged when useful, but they are optional and never a merge gate.
 - Only the repository owner, `@gutierrezje`, merges pull requests.
 - Use squash merge so `main` remains legible during the event.
 
@@ -63,7 +63,7 @@ Repository access does not imply permission to edit every area concurrently. If 
 
 ## Verification and handoff
 
-Before requesting review:
+Before asking the repository owner to merge:
 
 1. Run `pnpm build`.
 2. Exercise the changed user path locally.

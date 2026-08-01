@@ -66,6 +66,6 @@ pnpm build
 
 Read [AGENTS.md](./AGENTS.md), [CLAUDE.md](./CLAUDE.md), and [CONTEXT.md](./CONTEXT.md) before contributing.
 
-All changes use pull requests. Direct pushes to `main` are not part of the team workflow. The repository owner, `@gutierrezje`, merges after the build passes and at least one teammate approves.
+All changes use pull requests. Direct pushes to `main` are not part of the team workflow. The repository owner, `@gutierrezje`, merges after the build passes. Teammate reviews are welcome but optional and never a merge gate.
 
 Product decisions are tracked in the repository's [Wayfinder issues](https://github.com/gutierrezje/hmnty-creative-network/issues). Claim an open, unblocked decision ticket before working on it.
