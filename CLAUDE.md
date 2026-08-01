@@ -30,4 +30,4 @@ If there is no claimed issue, help the user select an open, unblocked Wayfinder 
 - Review the full diff and remove unrelated generated changes.
 - Open a pull request; never push directly to `main`.
 - Report the issue name, files changed, behavior changed, verification, evidence produced, and intentionally excluded work.
-- Leave merging to `@gutierrezje` after one non-author approval and a passing build.
+- Leave merging to `@gutierrezje` after a passing build. Peer review is optional and must not block progress.
