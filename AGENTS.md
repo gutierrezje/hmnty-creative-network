@@ -6,22 +6,22 @@ These instructions apply to every human and AI contributor in this repository.
 
 Before changing anything:
 
-1. Read `README.md` for the destination and pilot boundary.
-2. Read `CONTEXT.md` for the project's canonical language.
-3. Open the GitHub issue labelled `wayfinder:map` for the current decision frontier.
-4. Claim the relevant open, unblocked issue by assigning it before starting work.
+1. Read `VISION.md` for the current articulation of the weekend outcome.
+2. Read `DESIGN.md` for the visual and interaction standard.
+3. Read `README.md` and `CONTEXT.md` for the product boundary and canonical language.
+4. Check the relevant issue and concurrent work when they exist.
 
-Do not invent a new product direction in a code change. If a decision is unresolved, work the corresponding Wayfinder ticket with the humans who own the decision.
+`VISION.md` is alignment, not a constitution. Let implementation evidence and real user learning sharpen it during the weekend; make meaningful changes explicit so the team stays aligned.
 
 ## Destination
 
-Prove one complete loop: a real San Diego employer submits a paid-work brief, HMNTY approves a shortlist, and the employer accepts a warm introduction to at least one real local creative.
+The current weekend hypothesis is to prove one complete loop: a real San Diego employer submits a paid-work brief, HMNTY approves a shortlist, and the employer accepts a warm introduction to at least one real local creative.
 
 Optimize for evidence that this loop creates value. Do not optimize for feature count.
 
 ## Product boundaries
 
-Preserve these confirmed decisions:
+Use these decisions as the current product direction. When evidence points elsewhere, explain the change and update the shared documents rather than letting the product and its stated vision drift apart.
 
 - The initial demand side may be any San Diego organization with credible paid creative work in below-the-line production, media, or short-form content.
 - The initial talent pool is San Diego–area creatives with real, viewable work and current availability. SDSU is a sourcing channel, not a gate.
@@ -30,20 +30,19 @@ Preserve these confirmed decisions:
 - AI may normalize information and suggest rankings. It may not reject talent, contact a participant, or make an introduction without approval from a named HMNTY curator.
 - A completed hire is valuable but not required to prove the weekend pilot.
 
-Keep authentication, direct messaging, payments, hosted video, national expansion, and autonomous AI matching out of scope unless the Wayfinder destination is explicitly redrawn.
+Before adding infrastructure such as authentication, persistence, messaging, or payments, identify the user path it unlocks now, compare the simplest credible alternative, and account for setup and operational risk. Complexity should materially improve the usable weekend product or protect real participant data.
 
 ## Repository workflow
 
 - Never push directly to `main`.
 - Create a short type-prefixed branch: `feature/`, `bugfix/`, `docs/`, `test/`, `chore/`, or `refactor/`.
-- Keep one active owner per task and file area. Coordinate before editing a file another teammate owns.
-- Make the smallest coherent change that advances a claimed issue.
+- Coordinate overlapping work at the file-area level.
+- Make the smallest coherent change that advances the product.
 - Open a pull request using the repository template.
 - Require a passing `build` check. Reviews are encouraged when useful, but they are optional and never a merge gate.
-- Only the repository owner, `@gutierrezje`, merges pull requests.
 - Use squash merge so `main` remains legible during the event.
 
-Repository access does not imply permission to edit every area concurrently. If work overlaps, sequence it or split it along clean file boundaries.
+If work overlaps, sequence it or split it along clean file boundaries.
 
 ## Evidence and data integrity
 
@@ -56,14 +55,25 @@ Repository access does not imply permission to edit every area concurrently. If 
 ## Implementation guidance
 
 - Preserve the existing Next.js, TypeScript, and Tailwind architecture.
-- Prefer static or operationally simple solutions while proving the pilot.
-- Do not add a database, authentication provider, state-management library, or design system without a decision ticket explaining why the pilot now needs it.
+- Prefer the simplest reliable implementation that produces a usable end-to-end product. Simplicity is a means, not a reason to leave a core path fake or broken.
+- A database, authentication provider, state-management library, or other dependency must earn its complexity. Record the concrete need and why a smaller option is insufficient in the issue or pull request; a separate decision ticket is not required.
 - Keep AI backstage and human approval explicit in both interface copy and behavior.
 - Treat the Wall as a discovery surface supporting the full employer-brief-to-introduction loop, not as the whole product.
 
+## Quality bar
+
+High throughput is welcome; low-quality generated output is not.
+
+- Follow `DESIGN.md`. Do not introduce generic dashboard styling, extra decoration, inconsistent components, placeholder copy, or competing interaction patterns.
+- Match existing architecture, naming, and local conventions. Remove unused abstractions, duplicated logic, speculative flexibility, and generated commentary before merging.
+- Keep changes coherent and reviewable even when multiple agents contribute. Do not let agents edit the same files concurrently without explicit coordination.
+- Prefer a complete, exercised user path over a larger amount of partially connected code.
+- Treat privacy, consent, and server-side authorization decisions as product behavior, not polish.
+- If an agent loop is producing churn, repeatedly reopening settled decisions, or growing scope without improving the destination, stop the loop and narrow its task.
+
 ## Verification and handoff
 
-Before asking the repository owner to merge:
+Before merging:
 
 1. Run `pnpm build`.
 2. Exercise the changed user path locally.

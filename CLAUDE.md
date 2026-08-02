@@ -8,19 +8,16 @@ Follow `AGENTS.md` as the repository's complete operating policy. The rules belo
 
 ## Before working
 
-- Read the Wayfinder map and the full body of the claimed decision ticket.
-- Assign the ticket before doing work. An assigned ticket is claimed; do not duplicate it.
+- Read `VISION.md`, `DESIGN.md`, and the relevant issue or product context.
+- Check concurrent work before editing shared areas.
 - Confirm the branch is not `main` before editing.
-- State the smallest plan and expected files before making a non-trivial change.
 - Inspect existing work before generating replacements.
-
-If there is no claimed issue, help the user select an open, unblocked Wayfinder ticket. Do not fill idle time with speculative redesigns or extra features.
 
 ## While working
 
-- Keep one Claude session responsible for each file area.
-- Treat confirmed product decisions as constraints, not prompts for fresh ideation.
-- Ask a human when a choice changes eligibility, curation, consent, introduction policy, success criteria, or the destination.
+- Avoid uncoordinated overlapping edits. Branches and worktrees are available when parallel work touches nearby areas.
+- Treat the documented product direction as the shared starting point, not immutable truth. Surface evidence and reasoning when changing it, then keep the shared documents current.
+- Make changes to eligibility, curation, consent, introduction policy, success criteria, or the destination visible to the team.
 - Prefer work that produces a real employer brief, a consenting talent profile, an approved shortlist, an accepted introduction, or verifiable learning.
 - Do not silently replace placeholder talent with invented or scraped identities.
 - Do not contact external people or publish participant information without explicit user authorization.
@@ -31,4 +28,3 @@ If there is no claimed issue, help the user select an open, unblocked Wayfinder 
 - Review the full diff and remove unrelated generated changes.
 - Open a pull request; never push directly to `main`.
 - Report the issue name, files changed, behavior changed, verification, evidence produced, and intentionally excluded work.
-- Leave merging to `@gutierrezje` after a passing build. Peer review is optional and must not block progress.
