@@ -8,13 +8,13 @@ Follow `AGENTS.md` as the repository's complete operating policy. The rules belo
 
 ## Before working
 
-- Read the Wayfinder map and the full body of the claimed decision ticket.
-- Assign the ticket before doing work. An assigned ticket is claimed; do not duplicate it.
+- Read `VISION.md`, `DESIGN.md`, and the relevant issue or product context.
+- Assign or note the issue when one exists so parallel sessions do not duplicate it.
 - Confirm the branch is not `main` before editing.
 - State the smallest plan and expected files before making a non-trivial change.
 - Inspect existing work before generating replacements.
 
-If there is no claimed issue, help the user select an open, unblocked Wayfinder ticket. Do not fill idle time with speculative redesigns or extra features.
+If there is no issue, proceed with a clearly scoped request and record follow-up work rather than expanding it speculatively.
 
 ## While working
 
@@ -31,4 +31,4 @@ If there is no claimed issue, help the user select an open, unblocked Wayfinder 
 - Review the full diff and remove unrelated generated changes.
 - Open a pull request; never push directly to `main`.
 - Report the issue name, files changed, behavior changed, verification, evidence produced, and intentionally excluded work.
-- Leave merging to `@gutierrezje` after a passing build. Peer review is optional and must not block progress.
+- Merge after required checks pass, the branch is current, and actionable review threads are addressed or explicitly dispositioned. Peer review is optional and must not block progress.

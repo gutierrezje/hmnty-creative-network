@@ -6,12 +6,12 @@ These instructions apply to every human and AI contributor in this repository.
 
 Before changing anything:
 
-1. Read `README.md` for the destination and pilot boundary.
-2. Read `CONTEXT.md` for the project's canonical language.
-3. Open the GitHub issue labelled `wayfinder:map` for the current decision frontier.
-4. Claim the relevant open, unblocked issue by assigning it before starting work.
+1. Read `VISION.md` for the weekend outcome.
+2. Read `DESIGN.md` for the visual and interaction standard.
+3. Read `README.md` and `CONTEXT.md` for the product boundary and canonical language.
+4. Work from a relevant open issue when one exists. Assign it or leave a short note so parallel agents do not duplicate the work.
 
-Do not invent a new product direction in a code change. If a decision is unresolved, work the corresponding Wayfinder ticket with the humans who own the decision.
+Agents may make reversible implementation decisions without waiting for permission. Escalate decisions that materially change the product direction, consent model, participant privacy, or weekend destination.
 
 ## Destination
 
@@ -30,7 +30,7 @@ Preserve these confirmed decisions:
 - AI may normalize information and suggest rankings. It may not reject talent, contact a participant, or make an introduction without approval from a named HMNTY curator.
 - A completed hire is valuable but not required to prove the weekend pilot.
 
-Keep authentication, direct messaging, payments, hosted video, national expansion, and autonomous AI matching out of scope unless the Wayfinder destination is explicitly redrawn.
+Authentication, persistence, messaging, payments, and other infrastructure are not forbidden. Before adding them, push back on the idea: identify the user path they unlock now, compare the simplest credible alternative, and account for setup and operational risk. Add them only when they materially improve the usable weekend product or protect real participant data. Keep national expansion and autonomous AI decisions outside the weekend destination.
 
 ## Repository workflow
 
@@ -40,7 +40,7 @@ Keep authentication, direct messaging, payments, hosted video, national expansio
 - Make the smallest coherent change that advances a claimed issue.
 - Open a pull request using the repository template.
 - Require a passing `build` check. Reviews are encouraged when useful, but they are optional and never a merge gate.
-- Only the repository owner, `@gutierrezje`, merges pull requests.
+- Contributors and their agents may merge their own pull requests once required checks pass, the branch is current, and all actionable review threads are addressed or explicitly dispositioned.
 - Use squash merge so `main` remains legible during the event.
 
 Repository access does not imply permission to edit every area concurrently. If work overlaps, sequence it or split it along clean file boundaries.
@@ -56,14 +56,25 @@ Repository access does not imply permission to edit every area concurrently. If 
 ## Implementation guidance
 
 - Preserve the existing Next.js, TypeScript, and Tailwind architecture.
-- Prefer static or operationally simple solutions while proving the pilot.
-- Do not add a database, authentication provider, state-management library, or design system without a decision ticket explaining why the pilot now needs it.
+- Prefer the simplest reliable implementation that produces a usable end-to-end product. Simplicity is a means, not a reason to leave a core path fake or broken.
+- A database, authentication provider, state-management library, or other dependency must earn its complexity. Record the concrete need and why a smaller option is insufficient in the issue or pull request; a separate decision ticket is not required.
 - Keep AI backstage and human approval explicit in both interface copy and behavior.
 - Treat the Wall as a discovery surface supporting the full employer-brief-to-introduction loop, not as the whole product.
 
+## Quality bar
+
+High throughput is welcome; low-quality generated output is not.
+
+- Follow `DESIGN.md`. Do not introduce generic dashboard styling, extra decoration, inconsistent components, placeholder copy, or competing interaction patterns.
+- Match existing architecture, naming, and local conventions. Remove unused abstractions, duplicated logic, speculative flexibility, and generated commentary before merging.
+- Keep changes coherent and reviewable even when multiple agents contribute. Do not let agents edit the same files concurrently without explicit coordination.
+- Prefer a complete, exercised user path over a larger amount of partially connected code.
+- Treat privacy, consent, and server-side authorization decisions as product behavior, not polish.
+- If an agent loop is producing churn, repeatedly reopening settled decisions, or growing scope without improving the destination, stop the loop and narrow its task.
+
 ## Verification and handoff
 
-Before asking the repository owner to merge:
+Before merging:
 
 1. Run `pnpm build`.
 2. Exercise the changed user path locally.
