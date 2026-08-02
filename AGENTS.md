@@ -6,22 +6,22 @@ These instructions apply to every human and AI contributor in this repository.
 
 Before changing anything:
 
-1. Read `VISION.md` for the weekend outcome.
+1. Read `VISION.md` for the current articulation of the weekend outcome.
 2. Read `DESIGN.md` for the visual and interaction standard.
 3. Read `README.md` and `CONTEXT.md` for the product boundary and canonical language.
 4. Work from a relevant open issue when one exists. Assign it or leave a short note so parallel agents do not duplicate the work.
 
-Agents may make reversible implementation decisions without waiting for permission. Escalate decisions that materially change the product direction, consent model, participant privacy, or weekend destination.
+`VISION.md` is alignment, not a constitution. Let implementation evidence and real user learning sharpen it during the weekend; make meaningful changes explicit so the team stays aligned.
 
 ## Destination
 
-Prove one complete loop: a real San Diego employer submits a paid-work brief, HMNTY approves a shortlist, and the employer accepts a warm introduction to at least one real local creative.
+The current weekend hypothesis is to prove one complete loop: a real San Diego employer submits a paid-work brief, HMNTY approves a shortlist, and the employer accepts a warm introduction to at least one real local creative.
 
 Optimize for evidence that this loop creates value. Do not optimize for feature count.
 
 ## Product boundaries
 
-Preserve these confirmed decisions:
+Use these decisions as the current product direction. When evidence points elsewhere, explain the change and update the shared documents rather than letting the product and its stated vision drift apart.
 
 - The initial demand side may be any San Diego organization with credible paid creative work in below-the-line production, media, or short-form content.
 - The initial talent pool is San Diego–area creatives with real, viewable work and current availability. SDSU is a sourcing channel, not a gate.
@@ -30,7 +30,7 @@ Preserve these confirmed decisions:
 - AI may normalize information and suggest rankings. It may not reject talent, contact a participant, or make an introduction without approval from a named HMNTY curator.
 - A completed hire is valuable but not required to prove the weekend pilot.
 
-Authentication, persistence, messaging, payments, and other infrastructure are not forbidden. Before adding them, push back on the idea: identify the user path they unlock now, compare the simplest credible alternative, and account for setup and operational risk. Add them only when they materially improve the usable weekend product or protect real participant data. Keep national expansion and autonomous AI decisions outside the weekend destination.
+Before adding infrastructure such as authentication, persistence, messaging, or payments, identify the user path it unlocks now, compare the simplest credible alternative, and account for setup and operational risk. Complexity should materially improve the usable weekend product or protect real participant data.
 
 ## Repository workflow
 
@@ -40,10 +40,9 @@ Authentication, persistence, messaging, payments, and other infrastructure are n
 - Make the smallest coherent change that advances a claimed issue.
 - Open a pull request using the repository template.
 - Require a passing `build` check. Reviews are encouraged when useful, but they are optional and never a merge gate.
-- Contributors and their agents may merge their own pull requests once required checks pass, the branch is current, and all actionable review threads are addressed or explicitly dispositioned.
 - Use squash merge so `main` remains legible during the event.
 
-Repository access does not imply permission to edit every area concurrently. If work overlaps, sequence it or split it along clean file boundaries.
+If work overlaps, sequence it or split it along clean file boundaries.
 
 ## Evidence and data integrity
 
