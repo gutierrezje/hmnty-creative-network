@@ -25,6 +25,12 @@ export default function Home() {
           <Link href="/refer" className="hover:text-ink">
             Vouch for someone
           </Link>
+          <span className="mx-3" aria-hidden>
+            ·
+          </span>
+          <Link href="/brief" className="hover:text-ink">
+            Bring a brief
+          </Link>
         </p>
       </header>
 

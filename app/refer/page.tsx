@@ -140,7 +140,7 @@ export default function ReferPage() {
                 type="email"
                 required
                 aria-label="Referred creative's email"
-                placeholder="a way to reach them — email"
+                placeholder="a way to reach them, like email"
                 className="w-full border border-rule bg-transparent px-3 py-2 text-sm outline-none focus:border-ink"
               />
               <input
@@ -148,13 +148,13 @@ export default function ReferPage() {
                 type="url"
                 required
                 aria-label="Link to the referred creative's work"
-                placeholder="one link to their work — the whole point is the work"
+                placeholder="one link to their work, the whole point is the work"
                 className="w-full border border-rule bg-transparent px-3 py-2 text-sm outline-none focus:border-ink"
               />
             </div>
 
             <div className="space-y-3">
-              <p className="meta text-ash">Why they belong — a line or two</p>
+              <p className="meta text-ash">Why they belong, a line or two</p>
               <textarea
                 name="note"
                 rows={3}
