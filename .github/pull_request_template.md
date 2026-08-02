@@ -4,7 +4,7 @@
 
 ## Why it should exist
 
-<!-- Link the claimed issue by name and explain how this advances the pilot destination. -->
+<!-- Explain how this advances the product. Link a relevant issue when one exists. -->
 
 ## Evidence and verification
 

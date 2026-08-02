@@ -4,7 +4,7 @@ HMNTY Creative Network is a work-first introduction network for San Diego creati
 
 The current prototype is intentionally narrow. It is being built to prove one complete loop with real people, not to imitate a mature self-serve marketplace.
 
-The team alignment contract for the event is [VISION.md](./VISION.md).
+The team's current alignment artifact for the event is [VISION.md](./VISION.md). It should evolve when implementation evidence or real user learning changes the team's view.
 
 ## Pilot destination
 
@@ -36,7 +36,7 @@ The app currently includes:
 - a request-for-introduction flow; and
 - placeholder talent records awaiting replacement with consenting local creatives.
 
-Authentication, messaging, payments, video hosting, and a production matching system are intentionally out of scope for the pilot.
+Infrastructure should follow demonstrated product need. Authentication, persistence, messaging, payments, or media hosting should enter the prototype when they unlock a concrete user path or protect real participant data and justify their operational cost.
 
 ## Stack
 
@@ -66,6 +66,6 @@ pnpm build
 
 Read [AGENTS.md](./AGENTS.md), [CLAUDE.md](./CLAUDE.md), and [CONTEXT.md](./CONTEXT.md) before contributing.
 
-All changes use pull requests. Direct pushes to `main` are not part of the team workflow. The repository owner, `@gutierrezje`, merges after the build passes. Teammate reviews are welcome but optional and never a merge gate.
+All changes use pull requests. Direct pushes to `main` are not part of the team workflow. Merge after the required checks pass. Teammate reviews are welcome but optional and never a merge gate.
 
-Product decisions are tracked in the repository's [Wayfinder issues](https://github.com/gutierrezje/hmnty-creative-network/issues). Claim an open, unblocked decision ticket before working on it.
+The repository's [issues](https://github.com/gutierrezje/hmnty-creative-network/issues) preserve product questions, implementation work, and learning when tracking them helps the team.

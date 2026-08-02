@@ -9,7 +9,7 @@ Before changing anything:
 1. Read `VISION.md` for the current articulation of the weekend outcome.
 2. Read `DESIGN.md` for the visual and interaction standard.
 3. Read `README.md` and `CONTEXT.md` for the product boundary and canonical language.
-4. Work from a relevant open issue when one exists. Assign it or leave a short note so parallel agents do not duplicate the work.
+4. Check the relevant issue and concurrent work when they exist.
 
 `VISION.md` is alignment, not a constitution. Let implementation evidence and real user learning sharpen it during the weekend; make meaningful changes explicit so the team stays aligned.
 
@@ -36,8 +36,8 @@ Before adding infrastructure such as authentication, persistence, messaging, or 
 
 - Never push directly to `main`.
 - Create a short type-prefixed branch: `feature/`, `bugfix/`, `docs/`, `test/`, `chore/`, or `refactor/`.
-- Keep one active owner per task and file area. Coordinate before editing a file another teammate owns.
-- Make the smallest coherent change that advances a claimed issue.
+- Coordinate overlapping work at the file-area level.
+- Make the smallest coherent change that advances the product.
 - Open a pull request using the repository template.
 - Require a passing `build` check. Reviews are encouraged when useful, but they are optional and never a merge gate.
 - Use squash merge so `main` remains legible during the event.

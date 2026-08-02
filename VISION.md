@@ -1,4 +1,6 @@
-# Weekend Vision
+# Weekend Vision — Living Draft
+
+This is the team's current best articulation of the weekend destination, not a fixed specification. Update it when shipped behavior, participant feedback, or stronger evidence changes what the team believes is worth proving.
 
 ## The finish line
 
@@ -73,14 +75,16 @@ The weekend is successful when all of these are true:
 
 Strong stretch outcomes include sending the introduction, scheduling a conversation, receiving a hiring commitment, or booking paid work. These deepen the evidence but do not justify neglecting the required loop.
 
-## Non-goals for this weekend
+## Default depriorities
 
 - A national or self-serve marketplace.
-- Authentication, direct messaging, payments, contracts, or hosted video.
-- A large database or production matching algorithm.
+- Infrastructure without a concrete weekend user path or privacy need.
+- A production-scale database or matching algorithm before the real workflow calls for one.
 - Autonomous AI evaluation, rejection, outreach, or introductions.
 - Perfect visual polish without real employer and creative participation.
 - A completed hire as the only acceptable proof of progress.
+
+These are prioritization prompts, not permanent prohibitions. Reconsider them when evidence shows that one is necessary for a usable, trustworthy product.
 
 ## How we choose work
 
@@ -90,8 +94,8 @@ When priorities compete, choose:
 2. a real employer brief over another feature;
 3. the complete introduction loop over a deeper discovery interface;
 4. documented learning over unsupported claims; and
-5. one owned, reviewable task over parallel AI-generated redesigns.
+5. coordinated parallel work over overlapping AI-generated redesigns.
 
-If a task does not make the public pilot more credible, move a real participant through the loop, or strengthen the evidence package, it is not a weekend priority.
+Favor tasks that make the public pilot more credible, move a real participant through the loop, strengthen the evidence package, or reveal that this framing should change.
 
-The shared decision map is [Wayfinder: Prove the HMNTY introduction loop](https://github.com/gutierrezje/hmnty-creative-network/issues/1).
+The current decision map is [Wayfinder: Prove the HMNTY introduction loop](https://github.com/gutierrezje/hmnty-creative-network/issues/1).
