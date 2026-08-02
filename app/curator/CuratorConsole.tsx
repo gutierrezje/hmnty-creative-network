@@ -214,9 +214,7 @@ export default function CuratorConsole({
                   </span>
                 </div>
 
-                {/* Name shown here because the curator is the accountable human
-                    who reveals identity while building a shortlist — this is not
-                    the wall. */}
+                {/* Public-safe reference; identity stays out of this demo. */}
                 <p className="mt-1 text-sm">Creative {c.id}</p>
 
                 <button
@@ -344,7 +342,7 @@ function IntroductionRow({
         </p>
         <button
           onClick={onAccept}
-          className="meta mt-3 bg-ink px-4 py-3 text-paper transition-opacity hover:opacity-85"
+          className="meta mt-3 text-secondary transition-opacity hover:opacity-70"
         >
           Employer accepted the introduction
         </button>
@@ -376,7 +374,7 @@ function IntroductionRow({
       <button
         onClick={onMake}
         disabled={sending === "sending" || !hasRationale || !hasCurator}
-        className="meta bg-ink px-4 py-3 text-paper transition-opacity hover:opacity-85 disabled:opacity-50"
+        className="meta text-secondary transition-opacity hover:opacity-70 disabled:opacity-50"
       >
         {sending === "sending" ? "Sending…" : "Make introduction"}
       </button>

@@ -43,6 +43,34 @@ function isEmail(value: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 }
 
+function replyToFor(
+  kind: Kind,
+  body: Record<string, unknown>,
+): string | undefined {
+  let candidate: string;
+
+  switch (kind) {
+    case "intro":
+      candidate = str(body.from);
+      break;
+    case "self-intake":
+    case "brief":
+      candidate = str(body.contactEmail);
+      break;
+    case "referral":
+      candidate = str(body.referrerEmail);
+      break;
+    case "introduction":
+      return undefined;
+    default: {
+      const unhandledKind: never = kind;
+      throw new Error(`Unhandled intake kind: ${unhandledKind}`);
+    }
+  }
+
+  return isEmail(candidate) ? candidate : undefined;
+}
+
 function isHttpUrl(value: string): boolean {
   try {
     const url = new URL(value);
@@ -313,12 +341,7 @@ export async function POST(req: Request) {
   // a referral replies to the referrer, not the referred person; a brief
   // replies to the employer's contact. An introduction is sent by HMNTY on the
   // curator's behalf and carries no participant reply-to.
-  const replyTo =
-    kind === "intro"
-      ? str(body.from)
-      : kind === "referral"
-        ? str(body.referrerEmail)
-        : str(body.contactEmail);
+  const replyTo = replyToFor(kind, body);
 
   try {
     const res = await fetch("https://api.resend.com/emails", {
